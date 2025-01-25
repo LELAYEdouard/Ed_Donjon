@@ -17,8 +17,8 @@ def isCollision(co:list[int],key:str,room:Room):
 
     if((lst[1]==1 and room.up==False)or (lst[1]==HEIGHT and room.down==False) or (lst[0]==1 and room.left==False )or (lst[0]==WIDTH and room.right==False)):
         return True
-    if((lst[1]==1 and room.up==True and (((WIDTH-2)//3)+2 >lst[0]>1 or (((WIDTH-2)//3)*2)+3<lst[0]<WIDTH))
-        or (lst[1]==HEIGHT and room.down==True and (((WIDTH-2)//3)+2 >lst[0]>1 or (((WIDTH-2)//3)*2)+3<lst[0]<WIDTH))
+    if((lst[1]==1 and room.up==True and (((WIDTH-2)//3)+3 >lst[0]>1 or (((WIDTH-2)//3)*2)+2<lst[0]<WIDTH))
+        or (lst[1]==HEIGHT and room.down==True and (((WIDTH-2)//3)+3 >lst[0]>1 or (((WIDTH-2)//3)*2)+2<lst[0]<WIDTH))
           or (lst[0]==1 and room.left==True and (((HEIGHT-2)//3)+2>lst[1]>1 or (((HEIGHT-2)//3)*2)+1<lst[1]<HEIGHT))
           or (lst[0]==WIDTH and room.right==True and(((HEIGHT-2)//3)+2>lst[1]>1 or (((HEIGHT-2)//3)*2)+1<lst[1]<HEIGHT))):
         return True

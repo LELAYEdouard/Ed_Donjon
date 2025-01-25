@@ -43,7 +43,7 @@ class Player():
         gotoxy(X_UI-50,Y_UI+len(self.inventory)+3)
         print(f"-----------------LEVEL-{self.lvl}----------------") 
         gotoxy(X_UI-50,Y_UI+len(self.inventory)+4)
-        print("█"*self.prog)
+        print(LVL_CHAR*self.prog)
         gotoxy(X_UI-50,Y_UI+len(self.inventory)+5)
         print("----------------------------------------") 
     

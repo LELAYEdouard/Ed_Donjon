@@ -44,7 +44,7 @@ while(key!=QUIT):
     player.move(player_co,key,map[i][j])
     
 
-    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
+    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+1 and map[i][j].right):
         j+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]-=WIDTH-2
@@ -52,7 +52,7 @@ while(key!=QUIT):
         player.add_xp(10)
         print_ui(map[i][j],player)
         
-    if(player_co[0]==1 and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
+    if(player_co[0]==1 and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+1 and map[i][j].left):
         j-=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]+=WIDTH-2
@@ -60,7 +60,7 @@ while(key!=QUIT):
         player.add_xp(10)
         print_ui(map[i][j],player)
         
-    if(player_co[1]==1 and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].up):
+    if(player_co[1]==1 and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].up):
         i-=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]+=HEIGHT-2
@@ -68,7 +68,7 @@ while(key!=QUIT):
         player.add_xp(10)
         print_ui(map[i][j],player)
 
-    if(player_co[1]==HEIGHT and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].down):
+    if(player_co[1]==HEIGHT and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].down):
         i+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]-=HEIGHT-2

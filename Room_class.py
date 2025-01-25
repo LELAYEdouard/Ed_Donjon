@@ -11,7 +11,7 @@ class Room():
     def show(self):
         #top
         if(self.up ==True):
-            print(WALL + ((WIDTH-2)//3)*WALL + (((WIDTH-2)//3)+2)*VOID + ((WIDTH-2)//3)*WALL + WALL)
+            print((((WIDTH-2)//3)+2)*WALL + ((WIDTH-2)//3)*VOID + (((WIDTH-2)//3)+2)*WALL)
             for i in range((((HEIGHT-2)+1)//3)):
                 print(WALL + (WIDTH-2)*VOID + WALL)
         else:
@@ -37,7 +37,7 @@ class Room():
         if(self.down ==True):
             for i in range((((HEIGHT-2)+1)//3)):
                 print(WALL + (WIDTH-2)*VOID + WALL)
-            print(WALL + ((WIDTH-2)//3)*WALL + (((WIDTH-2)//3)+2)*VOID + ((WIDTH-2)//3)*WALL + WALL)
+            print((((WIDTH-2)//3)+2)*WALL + ((WIDTH-2)//3)*VOID + (((WIDTH-2)//3)+2)*WALL)
             
         else:
             for i in range((((HEIGHT-2)+1)//3)):
