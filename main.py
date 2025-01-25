@@ -35,10 +35,10 @@ while(key!=QUIT):
     gotoxy(0,0)
     key = getch().decode('utf-8')
 
-    if(key==INTERACT and (isCollision(player_co,DOWN,m[i][j]) or isCollision(player_co,UP,m[i][j]) or isCollision(player_co,LEFT,m[i][j]) or isCollision(player_co,RIGHT,m[i][j]))):
-        chest_interact(player_co,m[i][j])
+    if(key==INTERACT and (isCollision(player_co,DOWN,map[i][j]) or isCollision(player_co,UP,map[i][j]) or isCollision(player_co,LEFT,map[i][j]) or isCollision(player_co,RIGHT,map[i][j]))):
+        chest_interact(player_co,map[i][j])
         chest_print=True
-    if(chest_print and key!=INTERACT and not(isCollision(player_co,DOWN,m[i][j]) and isCollision(player_co,UP,m[i][j]) and isCollision(player_co,LEFT,m[i][j]) and isCollision(player_co,RIGHT,m[i][j]))):
+    if(chest_print and key!=INTERACT and not(isCollision(player_co,DOWN,map[i][j]) and isCollision(player_co,UP,map[i][j]) and isCollision(player_co,LEFT,map[i][j]) and isCollision(player_co,RIGHT,map[i][j]))):
         chest_erase()
     
     player.move(player_co,key,map[i][j])
