@@ -1,1 +1,1 @@
-import os
+= getch().decode('utf-8')

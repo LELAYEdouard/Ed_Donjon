@@ -7,8 +7,10 @@ from msvcrt import getch
 from const import *
 from var import *
 from graphic_func import *
-from function import *
+from function import create_map,isCollision 
 from obj_class import *
+from Player_class import *
+from Room_class import *
 #game
 
 
@@ -37,7 +39,7 @@ while(key!=QUIT and not(collision)):
     player.move(player_co,key)
     collision= isCollision(player_co)
 
-    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
+    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
         j+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]-=WIDTH-2
@@ -45,7 +47,7 @@ while(key!=QUIT and not(collision)):
         player.add_xp(20)
         print_ui(map[i][j],player)
         
-    if(player_co[0]==1 and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
+    if(player_co[0]==1 and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
         j-=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]+=WIDTH-2

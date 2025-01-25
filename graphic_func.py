@@ -22,6 +22,9 @@ def print_controls():
 
 def print_ui(room,player):
     room.show()
+    if(len(room.inv)!=0):
+        for i in range(len(room.inv)):
+            room.inv[i].print_chest()
     gotoxy(X_UI-31-len(player.name)//2,Y_UI-1)
     print(player)
     print_controls()
