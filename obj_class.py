@@ -34,7 +34,6 @@ class Chest():
         self.pos_x=x
         self.pos_y=y
 
-
     def add_item(self,item):
         self.inv.append(item)
 
@@ -49,6 +48,7 @@ class Chest():
             print(f"{i+1}: {self.inv[i]}")
         gotoxy(TEXT_COX,TEXT_COY+len(self.inv))
         print("----------------------------------------") 
+
 
     def print_chest(self):
         gotoxy(self.pos_x,self.pos_y)

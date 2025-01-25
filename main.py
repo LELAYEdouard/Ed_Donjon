@@ -7,13 +7,12 @@ from msvcrt import getch
 from const import *
 from var import *
 from graphic_func import *
-from function import create_map,isCollision 
+from function import create_map,isCollision,chest_interact,chest_erase 
 from obj_class import *
 from Player_class import *
 from Room_class import *
+
 #game
-
-
 os.system('cls' if os.name == 'nt' else 'clear')
 
 map=create_map(LENGTH_MAP)
@@ -32,19 +31,25 @@ os.system('cls' if os.name == 'nt' else 'clear')
 print_ui(map[i][j],player)
 
 
-while(key!=QUIT and not(collision)):
+while(key!=QUIT):
     gotoxy(0,0)
     key = getch().decode('utf-8')
+
+    if(key==INTERACT and (isCollision(player_co,DOWN,m[i][j]) or isCollision(player_co,UP,m[i][j]) or isCollision(player_co,LEFT,m[i][j]) or isCollision(player_co,RIGHT,m[i][j]))):
+        chest_interact(player_co,m[i][j])
+        chest_print=True
+    if(chest_print and key!=INTERACT and not(isCollision(player_co,DOWN,m[i][j]) and isCollision(player_co,UP,m[i][j]) and isCollision(player_co,LEFT,m[i][j]) and isCollision(player_co,RIGHT,m[i][j]))):
+        chest_erase()
     
-    player.move(player_co,key)
-    collision= isCollision(player_co)
+    player.move(player_co,key,map[i][j])
+    
 
     if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
         j+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]-=WIDTH-2
         collision=False
-        player.add_xp(20)
+        player.add_xp(10)
         print_ui(map[i][j],player)
         
     if(player_co[0]==1 and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
@@ -52,7 +57,7 @@ while(key!=QUIT and not(collision)):
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]+=WIDTH-2
         collision=False
-        player.add_xp(20)
+        player.add_xp(10)
         print_ui(map[i][j],player)
         
     if(player_co[1]==1 and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].up):
@@ -60,7 +65,7 @@ while(key!=QUIT and not(collision)):
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]+=HEIGHT-2
         collision=False
-        player.add_xp(20)
+        player.add_xp(10)
         print_ui(map[i][j],player)
 
     if(player_co[1]==HEIGHT and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].down):
@@ -68,7 +73,7 @@ while(key!=QUIT and not(collision)):
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]-=HEIGHT-2
         collision=False
-        player.add_xp(20)
+        player.add_xp(10)
         print_ui(map[i][j],player)
     
     time.sleep(SPEED)

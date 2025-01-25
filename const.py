@@ -6,7 +6,7 @@ UP="z"
 DOWN ="s"
 LEFT="q"
 RIGHT="d"
-
+INTERACT="e"
 #MAP
 HEIGHT=20
 WIDTH=2*HEIGHT

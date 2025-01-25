@@ -1,1 +1,1 @@
-= getch().decode('utf-8')
+((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4

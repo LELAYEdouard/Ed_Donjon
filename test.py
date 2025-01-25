@@ -31,14 +31,18 @@ m[0][0].add_item(ch)
 
 
 print_ui(m[i][j],player)
-m[0][0].inv[0].print_content()
-while(key!=QUIT and not(collision)):
+while(key!=QUIT):
     gotoxy(0,0)
     
     key = getch().decode('utf-8')
-    
-    player.move(player_co,key)
-    collision= isCollision(player_co)
+    if(key==INTERACT and (isCollision(player_co,DOWN,m[i][j]) or isCollision(player_co,UP,m[i][j]) or isCollision(player_co,LEFT,m[i][j]) or isCollision(player_co,RIGHT,m[i][j]))):
+        chest_interact(player_co,m[i][j])
+        chest_print=True
+    if(chest_print and key!=INTERACT and not(isCollision(player_co,DOWN,m[i][j]) and isCollision(player_co,UP,m[i][j]) and isCollision(player_co,LEFT,m[i][j]) and isCollision(player_co,RIGHT,m[i][j]))):
+        chest_erase()
+            
+
+    player.move(player_co,key,m[i][j])
 
     if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and m[i][j].right):
         j+=1

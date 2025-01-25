@@ -58,16 +58,16 @@ class Player():
             self.xp_ratio-=0.01
             
 
-    def move(self,co:list[int],key:str):
+    def move(self,co:list[int],key:str,room):
         #progression
         oldX,oldY=co[0],co[1]
-        if(key==UP):
+        if(key==UP and not(isCollision(co,key,room))):
             player_co[1]-=1
-        elif(key==DOWN ):
+        elif(key==DOWN and not(isCollision(co,key,room))):
             player_co[1]+=1
-        elif(key==LEFT ):
+        elif(key==LEFT and not(isCollision(co,key,room))):
             player_co[0]-=1
-        elif(key==RIGHT ):
+        elif(key==RIGHT and not(isCollision(co,key,room))):
             player_co[0]+=1
         
         gotoxy(oldX,oldY)
