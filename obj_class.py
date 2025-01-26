@@ -38,18 +38,43 @@ class Chest():
         self.inv.append(item)
 
     def take_item(self,i):
-        return self.inv[i-1]
+        return self.inv[i]
 
     def print_content(self):
-        gotoxy(TEXT_COX,TEXT_COY-1)
+        gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY-1)
         print("-----------------CHEST------------------")
         for i in range(len(self.inv)):
-            gotoxy(TEXT_COX,TEXT_COY+i)
+            gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+i)
             print(f"{i+1}: {self.inv[i]}")
-        gotoxy(TEXT_COX,TEXT_COY+len(self.inv))
+        gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+len(self.inv))
         print("----------------------------------------") 
 
 
     def print_chest(self):
         gotoxy(self.pos_x,self.pos_y)
         print(CHEST)
+
+class Logs():
+    def __init__(self):
+        self.inv=[]
+
+    def print_logs(self):
+        gotoxy(TEXT_COX,TEXT_COY-1)
+        print("--------------------LOGS--------------------")
+        for i in range(len(self.inv)):
+            gotoxy(TEXT_COX,TEXT_COY+i)
+            print(self.inv[i])
+        gotoxy(TEXT_COX,TEXT_COY+len(self.inv))
+        print("--------------------------------------------")
+
+    def add_log(self,log:str):
+        if(log!=VOID_MESS):
+            if(len(self.inv)==MAX_LOG):
+                for i in range(1,len(self.inv)):
+                    self.inv[i-1]=self.inv[i]
+                self.inv[-1]="● "+log+VOID*20
+            else:    
+                self.inv.append("● "+log+VOID*20)
+        
+        
+        

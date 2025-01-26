@@ -2,6 +2,7 @@ from const import *
 from var import *
 from graphic_func import *
 from Room_class import Room
+from obj_class import Chest,Weapon
 from random import randint
 
 def isCollision(co:list[int],key:str,room:Room):
@@ -28,29 +29,17 @@ def isCollision(co:list[int],key:str,room:Room):
             return True
     return False
     
-def chest_interact(co:list[int],room:Room):
-    for i in range(len(room.inv)):  
-        if((co[0]==room.inv[i].pos_x and co[1]+1==room.inv[i].pos_y )
-            or (co[1]==room.inv[i].pos_y and co[0]-1==room.inv[i].pos_x)
-            or (co[1]==room.inv[i].pos_y and co[0]+1==room.inv[i].pos_x)
-            or (co[0]==room.inv[i].pos_x and co[1]-1==room.inv[i].pos_y)):
-            room.inv[i].print_content()
-    
-def chest_erase():
-    gotoxy(TEXT_COX,TEXT_COY-1)
-    print("                                        ")
-    for i in range(MAX_INV):
-        gotoxy(TEXT_COX,TEXT_COY+i)
-        print("                                        ")
-    gotoxy(TEXT_COX,TEXT_COY+MAX_INV)
-    print("                                        ")
-
 def create_map(x):
     map=[[None for i in range(x)]for i in range(x)]
+
     start_room=Room(True,False,False,False)
     start_room2=Room(True,True,False,True)
 
     map[0][0]=start_room
+    ch=Chest(WIDTH//2,HEIGHT//2)
+    ch.add_item(rand_weapon())
+    map[0][0].inv.append(ch)
+
     map[0][1]=start_room2
     room=None
     for i in range(len(map)): #coin haut droit dejai fait (Room d'entrée)
@@ -79,6 +68,12 @@ def create_map(x):
             if map[i][j] == None and 0<j<len(map)-1 and 0<i<len(map)-1: # milieu
                 room=Room(rand_bool(),map[i][j-1].right,map[i-1][j].down,rand_bool())
                 map[i][j]=room
+                
+            if(i!=0 and j!=0):
+                lst=rand_chest()
+                if(lst is not None):
+                    for k in range(len(lst)):
+                        map[i][j].inv.append(lst[k])
     return map    
 
 def rand_bool():
@@ -86,3 +81,22 @@ def rand_bool():
     if a==0:
         return True
     return False
+
+def rand_chest():
+    chest=[]
+    nb_chest=randint(0,MAX_CHEST)
+    nb_items=randint(1,MAX_CHEST_INV)
+    for i in range(nb_chest):
+        x=randint(3,WIDTH-2)
+        y=randint(3,HEIGHT-2)
+        ch=Chest(x,y)
+        for j in range(nb_items):
+            weap=rand_weapon()
+            ch.add_item(weap)
+        chest.append(ch)
+    return chest
+
+def rand_weapon():
+    nb=randint(0,NB_WEAPON-1)
+    weap=Weapon(weapon[nb][0],weapon[nb][1])
+    return weap

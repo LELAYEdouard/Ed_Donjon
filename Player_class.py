@@ -20,8 +20,10 @@ class Player():
 
     def add_item(self,item):
         if(len(self.inventory)==MAX_INV):
-            print("Not enough space in inventory\n")
-        self.inventory.append(item)
+            return "Not enough space in inventory"
+        else:
+            self.inventory.append(item)
+        return VOID_MESS
     
     def drop_item(self):
         if self.inventory is not None:
@@ -29,7 +31,10 @@ class Player():
             return self.inventory.pop(choice)
         return None
     
-    def show_inentory(self):
+    def show_inventory(self):
+        for k in range(10):
+            gotoxy(X_UI-50,Y_UI+k)
+            print(VOID*WIDTH_INV)
         gotoxy(X_UI-50,Y_UI)
         print(f"---------------Inventory----------HP:{self.hp}")
         for i in range(len(self.inventory)):
@@ -38,7 +43,7 @@ class Player():
         gotoxy(X_UI-50,Y_UI+len(self.inventory)+1)
         print("----------------------------------------") 
         self.show_level()
-              
+
     def show_level(self):
         gotoxy(X_UI-50,Y_UI+len(self.inventory)+3)
         print(f"-----------------LEVEL-{self.lvl}----------------") 
@@ -56,7 +61,8 @@ class Player():
             self.xp=0
             self.prog=0
             self.xp_ratio-=0.01
-            
+            return f"Level UP {self.lvl-1}->{self.lvl}"
+        return VOID_MESS
 
     def move(self,co:list[int],key:str,room):
         #progression
