@@ -37,8 +37,9 @@ class Chest():
     def add_item(self,item):
         self.inv.append(item)
 
-    def take_item(self,i):
-        return self.inv[i]
+    def take_item(self,i):            
+        elt=self.inv.pop(i)
+        return elt
 
     def print_content(self):
         gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY-1)

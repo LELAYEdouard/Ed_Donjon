@@ -7,13 +7,12 @@ from Player_class import *
 from Room_class import *
 import os
 import time
-import sys, tty, termios
 #from msvcrt import getch
 
-m=create_map(5)
+map=create_map(5)
 os.system('cls' if os.name == 'nt' else 'clear')
 i,j=0,0
-m[i][j].show()
+map[i][j].show()
 enable_echo(False)
 logs=Logs()
 player=Player("TEST",PLAYER)
@@ -34,54 +33,64 @@ ch2=Chest(12,9)
 ch2.add_item(arme)
 ch2.add_item(arme)
 ch2.add_item(arme)
-m[0][0].add_item(ch)
-m[0][0].add_item(ch1)
-m[0][0].add_item(ch2)
-print_ui(m[i][j],player,logs)
+map[0][0].add_item(ch)
+map[0][0].add_item(ch1)
+map[0][0].add_item(ch2)
+print_ui(map[i][j],player,logs)
 while(key!=QUIT):
     gotoxy(0,0)
     
     key = getch()
-    if(key==INTERACT and (isCollision(player_co,DOWN,m[i][j]) or isCollision(player_co,UP,m[i][j]) or isCollision(player_co,LEFT,m[i][j]) or isCollision(player_co,RIGHT,m[i][j]))):
-        chest_interact(player_co,m[i][j])
+    if(key==INTERACT and (isCollisionChest(player_co,DOWN,map[i][j]) or isCollisionChest(player_co,UP,map[i][j]) or isCollisionChest(player_co,LEFT,map[i][j]) or isCollisionChest(player_co,RIGHT,map[i][j]))):
+        chest_interact(player_co,map[i][j])
         chest_print=True
-    if(chest_print and key!=INTERACT and not(isCollision(player_co,DOWN,m[i][j]) and isCollision(player_co,UP,m[i][j]) and isCollision(player_co,LEFT,m[i][j]) and isCollision(player_co,RIGHT,m[i][j]))):
+
+    #take item from chest to put in player inventory
+    if(chest_print and key!=INTERACT):
+        for k in range(MAX_CHEST_INV):
+            if(key == str(k+1)):
+                logs.add_log(player.add_item(map[i][j].inv[0].take_item(k)))
+                print_ui(map[i][j],player,logs)
+                
+    #move the player on the map
+    player.move(player_co,key,map[i][j])  
+
+    #erase display of the chest inventory if the player not in front of the chest anymore
+    if(chest_print and key!=INTERACT and not(isCollisionChest(player_co,DOWN,map[i][j]) or isCollisionChest(player_co,UP,map[i][j]) or isCollisionChest(player_co,LEFT,map[i][j]) or isCollisionChest(player_co,RIGHT,map[i][j]))):
         chest_erase()
-            
+        chest_print=False
 
-    player.move(player_co,key,m[i][j])
-
-    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and m[i][j].right):
+    if(player_co[0]==WIDTH and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
         j+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]-=WIDTH-2
         collision=False
         player.add_xp(20)
-        print_ui(m[i][j],player,logs)
+        print_ui(map[i][j],player,logs)
         
-    if(player_co[0]==1 and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and m[i][j].left):
+    if(player_co[0]==1 and ((HEIGHT-2)//3)+1<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
         j-=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]+=WIDTH-2
         collision=False
         player.add_xp(20)
-        print_ui(m[i][j],player,logs)
+        print_ui(map[i][j],player,logs)
         
-    if(player_co[1]==1 and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and m[i][j].up):
+    if(player_co[1]==1 and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].up):
         i-=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]+=HEIGHT-2
         collision=False
         player.add_xp(20)
-        print_ui(m[i][j],player,logs)
+        print_ui(map[i][j],player,logs)
 
-    if(player_co[1]==HEIGHT and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and m[i][j].down):
+    if(player_co[1]==HEIGHT and ((WIDTH-2)//3)+1<player_co[0]<(((WIDTH-2)//3)*2)+4 and map[i][j].down):
         i+=1
         os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]-=HEIGHT-2
         collision=False
         player.add_xp(20)
-        print_ui(m[i][j],player,logs)
+        print_ui(map[i][j],player,logs)
     
     time.sleep(SPEED)
 os.system('cls' if os.name == 'nt' else 'clear')

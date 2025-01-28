@@ -7,3 +7,4 @@ key=""
 chest_print=False
 player_co=[BASE_PLAYER_CO_X,BASE_PLAYER_CO_Y] 
 weapon={0:["Sword",10]} # dont forget to increase NB_WEAPON if we add weapon
+chest_id=0

@@ -26,8 +26,8 @@ def enable_echo(enable):
         new[3] &= ~termios.ECHO
 
     termios.tcsetattr(fd, termios.TCSANOW, new)
-#check if the player is in collision with a wall or a chest
-def isCollision(co:list[int],key:str,room:Room):
+#check if the player is in collision with a wall 
+def isCollisionBorder(co:list[int],key:str,room:Room):
     lst=co.copy()
     if(key == UP):
         lst[1]-=1
@@ -45,11 +45,23 @@ def isCollision(co:list[int],key:str,room:Room):
           or (lst[0]==1 and room.left==True and (((HEIGHT-2)//3)+2>lst[1]>1 or (((HEIGHT-2)//3)*2)+1<lst[1]<HEIGHT))
           or (lst[0]==WIDTH and room.right==True and(((HEIGHT-2)//3)+2>lst[1]>1 or (((HEIGHT-2)//3)*2)+1<lst[1]<HEIGHT))):
         return True
+    return False
+#check if the player is in collision with a chest
+def isCollisionChest(co:list[int],key:str,room:Room):
+    lst=co.copy()
+    if(key == UP):
+        lst[1]-=1
+    elif(key == DOWN):
+        lst[1]+=1
+    elif(key == LEFT):
+        lst[0]-=1
+    elif(key == RIGHT):
+        lst[0]+=1   
+
     for i in range(len(room.inv)):
         if((lst[0]==room.inv[i].pos_x and lst[1]==room.inv[i].pos_y )
            or (lst[1]==room.inv[i].pos_y and lst[0]==room.inv[i].pos_x)):
             return True
-    return False
 '''create a map with random room and chest  
 the two first room are already created and are always the same'''
 def create_map(x):

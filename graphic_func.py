@@ -21,7 +21,8 @@ def print_controls():
     gotoxy(X_UI,i)
     print("--------------------")
 #dislay the UI on screen
-def print_ui(room,player,logs):
+def print_ui(room,player,logs,chest_print,chest_id):
+    gotoxy(0,0)
     room.show()
     if(len(room.inv)!=0):
         for i in range(len(room.inv)):
@@ -31,6 +32,11 @@ def print_ui(room,player,logs):
     print_controls()
     logs.print_logs()
     player.show_inventory()
+    if(chest_print):
+        room.inv[chest_id].print_content()
+    else:
+        chest_erase()
+    
     gotoxy(player_co[0],player_co[1])
     draw(PLAYER)
 #erase the chest inventory on screen
@@ -49,4 +55,5 @@ def chest_interact(co:list[int],room:Room):
             or (co[1]==room.inv[i].pos_y and co[0]-1==room.inv[i].pos_x)
             or (co[1]==room.inv[i].pos_y and co[0]+1==room.inv[i].pos_x)
             or (co[0]==room.inv[i].pos_x and co[1]-1==room.inv[i].pos_y)):
-            room.inv[i].print_content()    
+            room.inv[i].print_content()
+            return i    

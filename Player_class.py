@@ -1,6 +1,6 @@
 from var import *
 from const import *
-from function import gotoxy,draw,isCollision
+from function import gotoxy,draw,isCollisionBorder,isCollisionChest
 
 class Player():
     def __init__(self,name:str,char:str):
@@ -67,13 +67,13 @@ class Player():
     def move(self,co:list[int],key:str,room):
         #progression
         oldX,oldY=co[0],co[1]
-        if(key==UP and not(isCollision(co,key,room))):
+        if(key==UP and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
             player_co[1]-=1
-        elif(key==DOWN and not(isCollision(co,key,room))):
+        elif(key==DOWN and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
             player_co[1]+=1
-        elif(key==LEFT and not(isCollision(co,key,room))):
+        elif(key==LEFT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
             player_co[0]-=1
-        elif(key==RIGHT and not(isCollision(co,key,room))):
+        elif(key==RIGHT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
             player_co[0]+=1
         
         gotoxy(oldX,oldY)
