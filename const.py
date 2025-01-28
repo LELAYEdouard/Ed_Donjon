@@ -16,7 +16,7 @@ CHEST="❒"
 LVL_CHAR="█"
 BOSS="♕"
 
-X_UI=180
+X_UI=160
 Y_UI=2
 WIDTH_INV=40
 

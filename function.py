@@ -4,7 +4,29 @@ from graphic_func import *
 from Room_class import Room
 from obj_class import Chest,Weapon
 from random import randint
+import sys, termios
+#get char from keyboard (from : https://forums.raspberrypi.com/viewtopic.php?t=69046)
+def getch():
+  old_settings = termios.tcgetattr(0)
+  new_settings = old_settings[:]
+  new_settings[3] &= ~termios.ICANON
+  try:
+    termios.tcsetattr(0, termios.TCSANOW, new_settings)
+    ch = sys.stdin.read(1)
+  finally:
+    termios.tcsetattr(0, termios.TCSANOW, old_settings)
+  return ch
+#enable or disable echo (from : https://gist.github.com/kgriffs/5726314)
+def enable_echo(enable):
+    fd = sys.stdin.fileno()
+    new = termios.tcgetattr(fd)
+    if enable:
+        new[3] |= termios.ECHO
+    else:
+        new[3] &= ~termios.ECHO
 
+    termios.tcsetattr(fd, termios.TCSANOW, new)
+#check if the player is in collision with a wall or a chest
 def isCollision(co:list[int],key:str,room:Room):
     lst=co.copy()
     if(key == UP):
@@ -28,7 +50,8 @@ def isCollision(co:list[int],key:str,room:Room):
            or (lst[1]==room.inv[i].pos_y and lst[0]==room.inv[i].pos_x)):
             return True
     return False
-    
+'''create a map with random room and chest  
+the two first room are already created and are always the same'''
 def create_map(x):
     map=[[None for i in range(x)]for i in range(x)]
 
@@ -75,13 +98,13 @@ def create_map(x):
                     for k in range(len(lst)):
                         map[i][j].inv.append(lst[k])
     return map    
-
+#generate a random boolean
 def rand_bool():
     a=randint(0,1)
     if a==0:
         return True
     return False
-
+#generate a random chest
 def rand_chest():
     chest=[]
     nb_chest=randint(0,MAX_CHEST)
@@ -95,7 +118,7 @@ def rand_chest():
             ch.add_item(weap)
         chest.append(ch)
     return chest
-
+#generate a random weapon
 def rand_weapon():
     nb=randint(0,NB_WEAPON-1)
     weap=Weapon(weapon[nb][0],weapon[nb][1])
