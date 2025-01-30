@@ -46,7 +46,7 @@ class Chest():
         print("-----------------CHEST------------------")
         for i in range(len(self.inv)):
             gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+i)
-            print(f"{i+1}: {self.inv[i]}")
+            print(f"{i+1}: {self.inv[i]}                                              ")
         gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+len(self.inv))
         print("----------------------------------------") 
 

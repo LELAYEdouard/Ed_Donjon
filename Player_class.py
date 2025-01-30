@@ -1,10 +1,12 @@
 from var import *
 from const import *
-from function import gotoxy,draw,isCollisionBorder,isCollisionChest
+from function import gotoxy,draw,isCollisionBorder,isCollisionChest,getch
 
 class Player():
     def __init__(self,name:str,char:str):
         self.hp=MAX_HEALTH
+        if(name==""):
+            name=BASE_NAME
         self.name=name
         self.inventory=[]
         self.char=char
@@ -25,11 +27,34 @@ class Player():
             self.inventory.append(item)
         return VOID_MESS
     
-    def drop_item(self):
-        if self.inventory is not None:
-            choice=int(input())-1
-            return self.inventory.pop(choice)
-        return None
+    def drop_item(self,room):
+        gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY-1)
+        print(f"-----------------DROP----STOP : {DROP_ITEM} ------")
+        for i in range(len(self.inventory)):
+            gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+i)
+            print(f"{i+1}: {self.inventory[i]}                                              ")
+        gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+len(self.inventory))
+        print("----------------------------------------") 
+        if (len(self.inventory)!=0):
+            if(len(room.inv)!=0):
+                key=getch()
+                if(key==DROP_ITEM): 
+                    return "Drop stopped                                "
+                elif(key.isdigit() and int(key)<=len(self.inventory)):
+                    elt=self.inventory.pop(int(key)-1)
+                    for k in range(len(room.inv)):
+                        if(len(room.inv[k].inv)!=MAX_CHEST_INV):
+                            room.inv[0].add_item(elt)
+                            return f"{elt} has been dropped                          " 
+                        else:
+                            self.inventory.insert(int(key),elt)
+                            return "No space in chest to drop item              "
+                else:
+                    return "Drop stopped                                "
+            else:
+                return "No chest to drop item                       "
+        return "No item to drop                             "
+                
     
     def show_inventory(self):
         for k in range(10):

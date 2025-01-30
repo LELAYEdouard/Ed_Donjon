@@ -44,5 +44,7 @@ class Room():
                 print(WALL + (WIDTH-2)*VOID + WALL)
             print(WIDTH*WALL)
 
+        
+
     def add_item(self,item):
         self.inv.append(item)

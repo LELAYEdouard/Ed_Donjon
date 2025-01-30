@@ -120,7 +120,7 @@ def rand_bool():
 def rand_chest():
     chest=[]
     nb_chest=randint(0,MAX_CHEST)
-    nb_items=randint(1,MAX_CHEST_INV)
+    nb_items=randint(1,MAX_CHEST_INV-1)
     for i in range(nb_chest):
         x=randint(3,WIDTH-2)
         y=randint(3,HEIGHT-2)

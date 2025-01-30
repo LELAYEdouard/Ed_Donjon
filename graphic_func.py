@@ -21,7 +21,7 @@ def print_controls():
     gotoxy(X_UI,i)
     print("--------------------")
 #dislay the UI on screen
-def print_ui(room,player,logs,chest_print,chest_id):
+def print_ui(room,player,logs,chest_print,chest_id=0):
     gotoxy(0,0)
     room.show()
     if(len(room.inv)!=0):
