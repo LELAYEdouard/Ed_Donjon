@@ -93,7 +93,7 @@ def create_map(x):
     map[0][0].inv.append(ch)
 
     #init the 2nd room
-    weap=Weapon(weapon[0][0],weapon[0][1])
+    weap=Weapon(weapon[0][0],weapon[0][1],BASE_LVL_WEAPON)
     map[0][1]=start_room2
     mob1=Mob(mob[0][0],mob[0][1],WIDTH//2,HEIGHT//2,mob[0][2])
     mob1.add_item(weap)
@@ -141,11 +141,11 @@ def create_map(x):
     return map    
 #generate a random boolean
 def rand_bool():
-    a=randint(0,3)
-    return a==0
+    a=randint(0,5)
+    return a!=0
 #generate a random chest
 def rand_chest():
-    a=randint(0,3)
+    a=randint(0,5)
     chest=[]
     if a>0:
         nb_chest=randint(0,MAX_CHEST)
@@ -155,20 +155,22 @@ def rand_chest():
             y=randint(3,HEIGHT-2)
             ch=Chest(x,y)
             for j in range(nb_items):
-                weap=rand_weapon()
-                obj=rand_obj()
-                ch.add_item(weap)
-                ch.add_item(obj)
+                b=randint(0,1)
+                if b:
+                    item=rand_weapon()
+                else:
+                    item=rand_obj()
+                ch.add_item(item)
             chest.append(ch)
         return chest
 #generate a random weapon
 def rand_weapon():
     nb=randint(0,NB_WEAPON-1)
-    weap=Weapon(weapon[nb][0],weapon[nb][1])
+    weap=Weapon(weapon[nb][0],weapon[nb][1],BASE_LVL_WEAPON)
     return weap
 #generate a random mob
 def rand_mob():
-    a=randint(0,3)
+    a=randint(0,5)
     lstmob=[]
     if a>0:
         nb_mob=randint(0,NB_MAX_MOB)
@@ -230,7 +232,10 @@ def fight(p1:object,mob:object,logs:object):
 
                 if mob.hp==0:
                     interaction_erase()
-                    p1.add_xp(mob.xp)
+                    p1.inventory[int(choice)-1].add_xp(mob.xp)
+                    passlvl=p1.add_xp(mob.xp)
+                    if passlvl!=VOID_MESS:
+                        return f"You defeated a {mob.name}, you "+passlvl
                     return f"You defeated a {mob.name}"
                 logs.add_log(f"{mob.name} lost {p1.inventory[int(choice)-1].damage} HP ({mob.hp} HP left)")
                 logs.print_logs()
@@ -269,11 +274,11 @@ def use_item(player,logs):
     gotoxy(TEXT_CHEST_COX,TEXT_CHEST_COY+len(player.inventory))
     print("----------------------------------------")
     choice=""
-    while not(choice.isdigit()) or not(0<int(choice)<=len(fight_choice)):
+    while not(choice.isdigit()) or not(0<int(choice)<=len(player.inventory)):
         choice=getch()
         if choice ==QUIT:
             return VOID_MESS
-        elif(choice.isdigit() and 0<int(choice)<=len(fight_choice) ):
+        elif(choice.isdigit() and 0<int(choice)<=len(player.inventory) ):
             if type(player.inventory[int(choice)-1])==Obj:
                 elt=player.inventory[int(choice)-1].use()
                 player.inventory.pop(int(choice)-1)

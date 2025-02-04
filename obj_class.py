@@ -3,15 +3,30 @@ from const import *
 from function import gotoxy
 
 class Weapon():
-    def __init__(self,name,damage):
+    def __init__(self,name,damage,lvl):
         self.name=name
-        self.damage=damage
+        self.lvl=lvl
+        self.damage=damage*self.lvl
+        self.prog=0
+        self.xp_ratio=XP_RATIO
+        self.xp=0
 
     def attack(self):
         return self.damage
     
+    def add_xp(self,nb):
+        nb*=self.xp_ratio
+        self.xp+=nb
+        self.prog=round(self.xp)
+        if(self.prog>=MAX_XP_WEAPON):
+            self.lvl+=1
+            self.xp=0
+            self.prog=0
+            self.xp_ratio-=0.01
+            self.damage*=self.lvl
+
     def __repr__(self) :
-        return self.name
+        return f"{self.name} (LVL {self.lvl})"
 
 class Mob():
     def __init__(self,name,hp,posX,posY,xp):
@@ -35,6 +50,9 @@ class Mob():
     
     def attack(self):
         return self.weapon.damage
+
+    def __repr__(self):
+        return self.name
     
 class Obj():
     def __init__(self,name,hp):  
@@ -105,7 +123,4 @@ class Logs():
             print(VOID*45)
         gotoxy(TEXT_COX,TEXT_COY+len(self.inv))
         print(VOID*45)
-                                                           
-        
-        
-        
+                                                        

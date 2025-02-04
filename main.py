@@ -100,28 +100,24 @@ while(key!=QUIT):
         j+=1
         player_co[0]-=WIDTH-2
         collision=False
-        logs.add_log(player.add_xp(10))
         print_ui(map[i][j],player,logs,chest_print)
         
     if(player_co[0]==1 and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
         j-=1
         player_co[0]+=WIDTH-2
         collision=False
-        logs.add_log(player.add_xp(10))
         print_ui(map[i][j],player,logs,chest_print)
         
     if(player_co[1]==1 and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].up):
         i-=1
         player_co[1]+=HEIGHT-2
         collision=False
-        logs.add_log(player.add_xp(10))
         print_ui(map[i][j],player,logs,chest_print)
 
     if(player_co[1]==HEIGHT and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].down):
         i+=1
         player_co[1]-=HEIGHT-2
         collision=False
-        logs.add_log(player.add_xp(10))
         print_ui(map[i][j],player,logs,chest_print)
     
     time.sleep(SPEED)
