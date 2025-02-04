@@ -9,7 +9,7 @@ import time
 from const import *
 from var import *
 from graphic_func import *
-from function import create_map,getch,enable_echo,isCollisionChest
+from function import create_map,getch,enable_echo,isCollisionChest,fight,use_item
 from obj_class import *
 from Player_class import *
 from Room_class import *
@@ -33,7 +33,7 @@ print("                                                                         
 #init player
 player=Player(input("Enter your name:\n"),PLAYER)
 #init logs
-logs=Logs()
+logs=Logs("LOGS")
 #clear screen
 os.system('cls' if os.name == 'nt' else 'clear')
 
@@ -48,6 +48,10 @@ while(key!=QUIT):
     #get the input
     key = getch()
     
+    #condition for use an item
+    if(key==OPEN_INV):
+        use_inv=True
+        logs.add_log(use_item(player,logs))
     #condition for dropping item
     if(key == DROP_ITEM):
         logs.add_log(player.drop_item(map[i][j]))
@@ -66,21 +70,34 @@ while(key!=QUIT):
                 logs.add_log(player.add_item(elt))
                 if(full_inv):
                     map[i][j].inv[chest_id].inv.insert(k,elt)
-                chest_erase()
+                interaction_erase()
                 print_ui(map[i][j],player,logs,chest_print,chest_id)
                 
     #move the player on the map
     player.move(player_co,key,map[i][j])  
 
-    #erase display of the chest inventory if the player not in front of the chest anymore
-    if(chest_print and key!=INTERACT and not(isCollisionChest(player_co,DOWN,map[i][j]) or isCollisionChest(player_co,UP,map[i][j]) or isCollisionChest(player_co,LEFT,map[i][j]) or isCollisionChest(player_co,RIGHT,map[i][j]))):
+    #test if a mob is in colision and if so launch a fight against it
+    mobtest=isCollisionMob(player_co,key,map[i][j])
+    if(mobtest[0]):
+        isfight=True
+        logs_fight=Logs("FIGHT")
+        logs.erase()
+        logs.add_log(fight(player,mobtest[1],logs_fight))
+        logs_fight.erase()
+        logs.print_logs()
+        if(mobtest[1].hp ==0):
+            map[i][j].mobs.pop(mobtest[2])
+            print_ui(map[i][j],player,logs,chest_print)
+
+    #erase display of the chest inventory or player inventory if the player not in front of the chest anymore
+    if((chest_print or use_inv) and key!=INTERACT and not(isCollisionChest(player_co,DOWN,map[i][j]) or isCollisionChest(player_co,UP,map[i][j]) or isCollisionChest(player_co,LEFT,map[i][j]) or isCollisionChest(player_co,RIGHT,map[i][j]))):
         chest_print=False
+        use_inv=False
         print_ui(map[i][j],player,logs,chest_print)
 
     #condition for changing room
     if(player_co[0]==WIDTH and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].right):
         j+=1
-        os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]-=WIDTH-2
         collision=False
         logs.add_log(player.add_xp(10))
@@ -88,7 +105,6 @@ while(key!=QUIT):
         
     if(player_co[0]==1 and ((HEIGHT-2)//3)<player_co[1]<(((HEIGHT-2)//3)*2)+2 and map[i][j].left):
         j-=1
-        os.system('cls' if os.name == 'nt' else 'clear')
         player_co[0]+=WIDTH-2
         collision=False
         logs.add_log(player.add_xp(10))
@@ -96,7 +112,6 @@ while(key!=QUIT):
         
     if(player_co[1]==1 and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].up):
         i-=1
-        os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]+=HEIGHT-2
         collision=False
         logs.add_log(player.add_xp(10))
@@ -104,7 +119,6 @@ while(key!=QUIT):
 
     if(player_co[1]==HEIGHT and ((WIDTH-2)//3)<player_co[0]<(((WIDTH-2)//3)*2)+3 and map[i][j].down):
         i+=1
-        os.system('cls' if os.name == 'nt' else 'clear')
         player_co[1]-=HEIGHT-2
         collision=False
         logs.add_log(player.add_xp(10))

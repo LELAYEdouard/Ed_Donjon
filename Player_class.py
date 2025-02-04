@@ -1,6 +1,6 @@
 from var import *
 from const import *
-from function import gotoxy,draw,isCollisionBorder,isCollisionChest,getch
+from function import gotoxy,draw,isCollisionBorder,isCollisionChest,getch,isCollisionMob
 
 class Player():
     def __init__(self,name:str,char:str):
@@ -17,8 +17,8 @@ class Player():
 
     def take_damage(self,nb):
         self.hp-=nb
-        if self.hp<=0:
-            self.hp=0
+        if self.hp<=MIN_HP:
+            self.hp=MIN_HP
 
     def add_item(self,item):
         if(len(self.inventory)==MAX_INV):
@@ -39,21 +39,21 @@ class Player():
             if(len(room.inv)!=0):
                 key=getch()
                 if(key==DROP_ITEM): 
-                    return "Drop stopped                                "
+                    return "Drop stopped"
                 elif(key.isdigit() and int(key)<=len(self.inventory)):
                     elt=self.inventory.pop(int(key)-1)
                     for k in range(len(room.inv)):
                         if(len(room.inv[k].inv)!=MAX_CHEST_INV):
                             room.inv[0].add_item(elt)
-                            return f"{elt} has been dropped                          " 
+                            return f"{elt} has been dropped" 
                         else:
                             self.inventory.insert(int(key),elt)
-                            return "No space in chest to drop item              "
+                            return "No space in chest to drop item"
                 else:
-                    return "Drop stopped                                "
+                    return "Drop stopped"
             else:
-                return "No chest to drop item                       "
-        return "No item to drop                             "
+                return "No chest to drop item"
+        return "No item to drop"
                 
     
     def show_inventory(self):
@@ -86,19 +86,19 @@ class Player():
             self.xp=0
             self.prog=0
             self.xp_ratio-=0.01
-            return f"Level UP {self.lvl-1}->{self.lvl}"
+            return f"Level UP {self.lvl-1}->{self.lvl}                               "
         return VOID_MESS
 
     def move(self,co:list[int],key:str,room):
         #progression
         oldX,oldY=co[0],co[1]
-        if(key==UP and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
+        if(key==UP and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)) and not(isCollisionMob(co,key,room)[0]))):
             player_co[1]-=1
-        elif(key==DOWN and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
+        elif(key==DOWN and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)) and not(isCollisionMob(co,key,room)[0]))):
             player_co[1]+=1
-        elif(key==LEFT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
+        elif(key==LEFT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)) and not(isCollisionMob(co,key,room)[0]))):
             player_co[0]-=1
-        elif(key==RIGHT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)))):
+        elif(key==RIGHT and (not(isCollisionBorder(co,key,room)) and not(isCollisionChest(co,key,room)) and not(isCollisionMob(co,key,room)[0]))):
             player_co[0]+=1
         
         gotoxy(oldX,oldY)
@@ -108,3 +108,8 @@ class Player():
 
     def __repr__(self):
         return self.name
+    
+    def use_item(self,hp):
+        self.hp+=hp
+        if self.hp>MAX_HEALTH:
+            self.hp=MAX_HEALTH

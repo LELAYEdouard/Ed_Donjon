@@ -7,6 +7,7 @@ class Room():
         self.up=up
         self.down=down
         self.inv=[]
+        self.mobs=[]
 
     def show(self):
         #top
@@ -45,6 +46,8 @@ class Room():
             print(WIDTH*WALL)
 
         
+    def add_mob(self,mob):
+        self.mobs.append(mob)    
 
     def add_item(self,item):
         self.inv.append(item)
